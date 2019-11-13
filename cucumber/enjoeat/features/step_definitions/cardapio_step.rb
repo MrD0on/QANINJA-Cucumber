@@ -1,7 +1,7 @@
 Dado("que acesso a lista de restaurantes") do
   visit "/restaurants"
 end
-Quando("eu acesso o restaurante {string}") do |restaurante|
+Quando("eu escolho o restaurante {string}") do |restaurante|
   find(".restaurant-item", text: restaurante.upcase).click
 end
 
@@ -13,4 +13,13 @@ Então("vejo os seguintes itens no cardápio:") do |table|
     expect(itens[index]).to have_text value["descricao"]
     expect(itens[index]).to have_text value["preco"]
   end
+end
+
+Então("eu vejo as seguintes informações adicionais:") do |table|
+  infos = table.rows_hash
+  detail = find('#detail')
+  expect(detail).to have_text infos['categoria']
+  expect(detail).to have_text infos['descricao']
+  expect(detail).to have_text infos['horarios']
+
 end
