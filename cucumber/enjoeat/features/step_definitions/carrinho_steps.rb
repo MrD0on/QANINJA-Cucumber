@@ -13,15 +13,12 @@ Quando("eu adicionar {int} unidade\\(s)") do |quantidade|
 end
 
 Então("deve ser adicionado {int} unidade\\(s) deste item") do |quantidade|
-  cart = find("#cart")
-  expect(cart).to have_text "(#{quantidade}x) #{@produto_nome}"
+  expect(@cart_page.box).to have_text "(#{quantidade}x) #{@produto_nome}"
   #Isso é interpolação de string
 end
 
 Então("o valor total deve ser de {string}") do |valor_total|
-  cart = find("#cart")
-  total = cart.find("tr", text: "Total:").find("td")
-  expect(total.text).to have_text valor_total
+  expect(@cart_page.total.text).to have_text valor_total
 end
 
 #Lista de Produtos
@@ -39,8 +36,36 @@ Quando("eu adiciono todos os itens") do
 end
 
 Então("vejo todos os itens no carrinho") do
-  cart = find("#cart")
   @product_list.each do |p|
-    expect(cart).to have_text "(#{p["quantidade"]}x) #{p["nome"]}"
+    expect(@cart_page.box).to have_text "(#{p["quantidade"]}x) #{p["nome"]}"
   end
+end
+
+#Remover Itens
+
+Dado("que eu tenho os seguintes itens no carrinho:") do |table|
+  @product_list = table.hashes
+  steps %{
+    Quando eu adiciono todos os itens
+  }
+end
+
+Quando("eu removo somente o {int}") do |item|
+  @cart_page.remove_item(item)
+end
+
+# Remover todos os itens
+
+Quando("eu removo todos os itens") do
+  @product_list.each_with_index do |value, idx|
+    @cart_page.remove_item(idx)
+  end
+end
+
+Então("vejo a seguinte mensagem no carrinho {string}") do |mensagem|
+  expect(@cart_page.box).to have_text mensagem
+end
+
+Quando("eu limpo o meu carrinho") do
+  click_button "Limpar"
 end
