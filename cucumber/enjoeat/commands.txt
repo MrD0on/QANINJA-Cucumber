@@ -1,0 +1,5 @@
+Para gerar relatório - cucumber --format html --out=log/report.html
+
+Para gerar no relatório e mostrar no console - cucumber -t @smoke --format html --out=log/report.html --format pretty
+
+executar o rake com relatórios - rake specs["-t @smoke"]
