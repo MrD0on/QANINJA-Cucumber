@@ -3,3 +3,8 @@ default: -p dot
 bdd: --format pretty
 dot: --format progress
 html: --format html --out=log/report.html
+chrome: -p dot BROWSER=chrome
+firefox: -p dot BROWSER=firefox
+chrome_headless: -p dot BROWSER=chrome_headless
+firefox_hedless: -p dot BROWSER=firefox_hedless
+''
